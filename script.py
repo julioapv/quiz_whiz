@@ -7,7 +7,38 @@ words_to_learn = {
     "water": "agua",
 }
 
-incorrect_words = []
+incorrect_words = {}
+
+def study_review_list():
+    print("In review mode you got inifine tries! :D")
+    for key, value in incorrect_words.items():
+        answer = input(f"What's the meaning of '{key}'? ")
+
+        while answer != value:
+            if answer == "":
+                answer = input(f"What's the meaning of '{key}'? ")
+                print()
+            elif(answer == value):
+                print("Correct!")
+                print(f"The meaning of '{key}' is '{value}'")
+                print()
+            else:
+                print("Incorrect :(")
+                answer = input(f"What's the meaning of '{key}'? ")
+                print()
+
+def review_prompt():
+    if len(incorrect_words) > 0:
+        print("These are the words you got wrong: ")
+        for word in incorrect_words:
+            print(word)
+            
+        answer = input("Would you like to study these words? (yes/no) ")
+        while (answer != 'yes') and (answer != 'no'):
+            answer = input("Would you like to study these words? (yes/no) ")
+        study_review_list()
+    else:
+        print("Excellent work, you didn't have any wrong words!")
 
 def study_pairs():
     tries = 3
@@ -25,17 +56,18 @@ def study_pairs():
                 print()
             else:
                 tries -= 1
-                if tries == 0:
+                if tries <= 0:
                     print("Incorrect :(")
                     print(f"The meaning of '{key}' is '{value}'")
                     print("Word added for later review...")
-                    incorrect_words.append(key)
+                    incorrect_words[key] = value
                     print()
                     break
                 print("Incorrect :(")
                 print(f"You have {tries} tries left")
                 answer = input(f"What's the meaning of '{key}'? ")
                 print()
+        tries = 3
 
 def is_valid_str(user_input):
     try:
@@ -83,5 +115,7 @@ def starter():
     
 def main():
     starter()
+    review_prompt()
+    print("You finished your study session, good job!")
 
 main()
