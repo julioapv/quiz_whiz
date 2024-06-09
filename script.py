@@ -1,4 +1,4 @@
-PAIR_LIMIT = 2 
+import random
 
 words_to_learn = {
     "dog": "perro",
@@ -7,11 +7,14 @@ words_to_learn = {
     "water": "agua",
 }
 
+random_words_to_learn = {}
+
 incorrect_words = {}
 
 def study_review_list():
     print("In review mode you got inifine tries! :D")
     for key, value in incorrect_words.items():
+
         answer = input(f"What's the meaning of '{key}'? ")
 
         while answer != value:
@@ -36,17 +39,25 @@ def review_prompt():
         answer = input("Would you like to study these words? (yes/no) ")
         while (answer != 'yes') and (answer != 'no'):
             answer = input("Would you like to study these words? (yes/no) ")
-        study_review_list()
+        
+        if answer == 'yes':
+            study_review_list()
+        else:
+            return
     else:
         print("Excellent work, you didn't have any wrong words!")
 
 def study_pairs():
     tries = 3
     
+    print("You have to write the Spanish translation for English word you see, make sure to write it correctly. You only have 3 attempts for each word")
+    print()
+    
     for key, value in words_to_learn.items():
+
         answer = input(f"What's the meaning of '{key}'? ")
         
-        while answer != value:
+        while True:
             if answer == "":
                 answer = input(f"What's the meaning of '{key}'? ")
                 print()
@@ -54,6 +65,7 @@ def study_pairs():
                 print("Correct!")
                 print(f"The meaning of '{key}' is '{value}'")
                 print()
+                break
             else:
                 tries -= 1
                 if tries <= 0:
@@ -77,7 +89,21 @@ def is_valid_str(user_input):
             return user_input
 
 def add_words_to_list():
-    for i in range(PAIR_LIMIT):
+    amount_to_add = input("How many pairs would you like to add today? (just write the number): ")
+    pair_limit = 0
+    
+    while True:
+        try:
+            amount_to_add = int(amount_to_add)
+            break
+        except ValueError:
+            print("You need to input a number! No letters, empty spaces or float values")
+            amount_to_add = input("How many pairs would you like to add today? (just write the number): ")
+            print()
+                
+    pair_limit += amount_to_add
+    
+    for i in range(pair_limit):
         user_eng_word = input("Enter your word in English: ")
             
         while not is_valid_str(user_eng_word):
@@ -94,28 +120,26 @@ def add_words_to_list():
         
         words_to_learn[user_eng_word] = user_esp_word
         print()
-    print(words_to_learn)
 
 def starter():
     print("Welcome to Quiz Whiz!")
     user_answer = input("Write 'study' (study with default pairs) or 'add' (add new pairs): ")
     
     while (user_answer != 'study') and (user_answer != 'add'):
-        user_answer = input("Write 'yes' (study with default pairs) or 'no' (add new pairs): ")
+        user_answer = input("Write 'study' (study with default pairs) or 'add' (add new pairs): ")
     
     if user_answer == 'study':
-        print("Studying right now...")
         print()
         study_pairs()
     else:
+        print()
         add_words_to_list()
-        print("Studying right now...")
         print()
         study_pairs()
     
 def main():
     starter()
     review_prompt()
-    print("You finished your study session, good job!")
+    print("You finished your study session.")
 
 main()
