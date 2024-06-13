@@ -1,4 +1,9 @@
 import random
+# future random study feature
+
+BREAK_LINE = "----------------------------"
+END_MESSAGE = "end session"
+INSTRUCTIONS = "Write 'end session' to stop studying and 'help me' to know the meaning of a word in review mode"
 
 words_to_learn = {
     "dog": "perro",
@@ -7,12 +12,13 @@ words_to_learn = {
     "water": "agua",
 }
 
-random_words_to_learn = {}
-
 incorrect_words = {}
 
 def study_review_list():
     print("In review mode you got inifine tries! :D")
+    print(INSTRUCTIONS)
+    print()
+    
     for key, value in incorrect_words.items():
 
         answer = input(f"What's the meaning of '{key}'? ")
@@ -25,6 +31,12 @@ def study_review_list():
                 print("Correct!")
                 print(f"The meaning of '{key}' is '{value}'")
                 print()
+            elif(answer == END_MESSAGE):
+                print("You finished your session, see you soon! ;)")
+                exit()
+            elif(answer == 'help me'):
+                print(f"The answer is: '{value}'")
+                answer = input(f"What's the meaning of '{key}'? ")
             else:
                 print("Incorrect :(")
                 answer = input(f"What's the meaning of '{key}'? ")
@@ -34,7 +46,7 @@ def review_prompt():
     if len(incorrect_words) > 0:
         print("These are the words you got wrong: ")
         for word in incorrect_words:
-            print(word)
+            print("-", word)
             
         answer = input("Would you like to study these words? (yes/no) ")
         while (answer != 'yes') and (answer != 'no'):
@@ -51,7 +63,7 @@ def study_pairs():
     tries = 3
     
     print("You have to write the Spanish translation for English word you see, make sure to write it correctly. You only have 3 attempts for each word")
-    print()
+    print(BREAK_LINE)
     
     for key, value in words_to_learn.items():
 
@@ -66,6 +78,9 @@ def study_pairs():
                 print(f"The meaning of '{key}' is '{value}'")
                 print()
                 break
+            elif(answer == END_MESSAGE):
+                print("You finished your session, see you soon! ;)")
+                exit()
             else:
                 tries -= 1
                 if tries <= 0:
@@ -89,41 +104,56 @@ def is_valid_str(user_input):
             return user_input
 
 def add_words_to_list():
-    amount_to_add = input("How many pairs would you like to add today? (just write the number): ")
-    pair_limit = 0
+    pair_amount_to_add = input("How many pairs would you like to add today? (just write the number): ")
+    
+    if(pair_amount_to_add == END_MESSAGE):
+        print("You finished your session, see you soon! ;)")
+        exit()
     
     while True:
         try:
-            amount_to_add = int(amount_to_add)
+            pair_amount_to_add = int(pair_amount_to_add)
             break
         except ValueError:
             print("You need to input a number! No letters, empty spaces or float values")
-            amount_to_add = input("How many pairs would you like to add today? (just write the number): ")
             print()
-                
-    pair_limit += amount_to_add
+            pair_amount_to_add = input("How many pairs would you like to add today? (just write the number): ")
+            print()
     
-    for i in range(pair_limit):
+    for i in range(pair_amount_to_add):
         user_eng_word = input("Enter your word in English: ")
             
         while not is_valid_str(user_eng_word):
-            print("Invalid input. Please enter a word (letters only):")
+            print("Invalid input. Please enter a word (letters only)")
             user_eng_word = input("Please enter a word in English: ")
             print()
-            
+        
+        if(user_eng_word == END_MESSAGE):
+            break
+        
         user_esp_word = input("Enter the translation in Spanish of the last word: ")
         
         while not is_valid_str(user_esp_word):
-            print("Invalid input. Please enter a word (letters only):")
+            print("Invalid input. Please enter a word (letters only)")
             user_esp_word = input("Please enter the Spanish translation: ")
             print()
+        
+        if(user_eng_word == END_MESSAGE):
+            break
         
         words_to_learn[user_eng_word] = user_esp_word
         print()
 
 def starter():
     print("Welcome to Quiz Whiz!")
+    print(INSTRUCTIONS)
+    print(BREAK_LINE)
     user_answer = input("Write 'study' (study with default pairs) or 'add' (add new pairs): ")
+
+
+    if(user_answer == END_MESSAGE):
+        print("You finished your session, see you soon! ;)")
+        exit()
     
     while (user_answer != 'study') and (user_answer != 'add'):
         user_answer = input("Write 'study' (study with default pairs) or 'add' (add new pairs): ")
