@@ -12,6 +12,12 @@ words_to_learn = {
     "water": "agua",
 }
 
+def randomize_dictionary(dictionary):
+    dict_pairs = list(dictionary.items())
+    random.shuffle(dict_pairs)
+    rand_dict = dict(dict_pairs)
+    return rand_dict
+
 incorrect_words = {}
 
 def study_review_list():
@@ -19,7 +25,9 @@ def study_review_list():
     print(INSTRUCTIONS)
     print()
     
-    for key, value in incorrect_words.items():
+    random_incorrect_words = randomize_dictionary(incorrect_words)
+    
+    for key, value in random_incorrect_words.items():
 
         answer = input(f"What's the meaning of '{key}'? ")
 
@@ -64,8 +72,10 @@ def study_pairs():
     
     print("You have to write the Spanish translation for English word you see, make sure to write it correctly. You only have 3 attempts for each word")
     print(BREAK_LINE)
-    
-    for key, value in words_to_learn.items():
+
+    new_rand_dict = randomize_dictionary(words_to_learn)
+
+    for key, value in new_rand_dict.items():
 
         answer = input(f"What's the meaning of '{key}'? ")
         
