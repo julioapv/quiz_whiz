@@ -1,5 +1,5 @@
-import random
-# future random study feature
+import random, time
+start_time = time.time()
 
 BREAK_LINE = "----------------------------"
 END_MESSAGE = "end session"
@@ -31,23 +31,24 @@ def study_review_list():
 
         answer = input(f"What's the meaning of '{key}'? ")
 
-        while answer != value:
+        while True:
             if answer == "":
-                answer = input(f"What's the meaning of '{key}'? ")
+                answer = input(f"What's the meaning of '{key}'?: ")
                 print()
             elif(answer == value):
                 print("Correct!")
                 print(f"The meaning of '{key}' is '{value}'")
                 print()
+                break
             elif(answer == END_MESSAGE):
                 print("You finished your session, see you soon! ;)")
                 exit()
             elif(answer == 'help me'):
                 print(f"The answer is: '{value}'")
-                answer = input(f"What's the meaning of '{key}'? ")
+                answer = input(f"What's the meaning of '{key}'?: ")
             else:
                 print("Incorrect :(")
-                answer = input(f"What's the meaning of '{key}'? ")
+                answer = input(f"What's the meaning of '{key}'?: ")
                 print()
 
 def review_prompt():
@@ -70,7 +71,7 @@ def review_prompt():
 def study_pairs():
     tries = 3
     
-    print("You have to write the Spanish translation for English word you see, make sure to write it correctly. You only have 3 attempts for each word")
+    print("You have to write the Spanish translation for each English word you see, make sure to write it correctly. You only have 3 attempts for each word")
     print(BREAK_LINE)
 
     new_rand_dict = randomize_dictionary(words_to_learn)
@@ -155,7 +156,7 @@ def add_words_to_list():
         print()
 
 def starter():
-    print("Welcome to Quiz Whiz!")
+    print("Welcome to Quiz Whiz! (^_^)")
     print(INSTRUCTIONS)
     print(BREAK_LINE)
     user_answer = input("Write 'study' (study with default pairs) or 'add' (add new pairs): ")
@@ -180,6 +181,10 @@ def starter():
 def main():
     starter()
     review_prompt()
-    print("You finished your study session.")
+    
+    end_time = round(time.time() - start_time, 2)
+    print(f"You finished your study session in {end_time} seconds (^.^)")
 
-main()
+
+if __name__ == "__main__":
+    main()
